@@ -1,0 +1,5 @@
+package caliban
+
+class GraphQL {
+
+}
