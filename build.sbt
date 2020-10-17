@@ -1,6 +1,5 @@
-
-val mainScala = "2.12.11"
-val allScala  = Seq("2.13.2", mainScala)
+val mainScala             = "2.12.11"
+val allScala              = Seq("2.13.2", mainScala)
 val akkaVersion           = "2.6.8"
 val catsEffectVersion     = "2.1.4"
 val circeVersion          = "0.13.0"
@@ -13,6 +12,11 @@ val zioVersion            = "1.0.0-RC21-2"
 val zioInteropCatsVersion = "2.1.4.0-RC17"
 val zioConfigVersion      = "1.0.0-RC25"
 val zqueryVersion         = "0.2.3"
+
+lazy val root = project
+  .in(file("."))
+  .settings(historyPath := None)
+  .aggregate(core)
 
 lazy val core = project
   .in(file("core"))
@@ -38,6 +42,12 @@ lazy val core = project
     fork in Test := true,
     fork in run := true
   )
+
+addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
+addCommandAlias(
+  "check",
+  "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck"
+)
 
 val commonSettings = Def.settings(
   scalaVersion := mainScala,
