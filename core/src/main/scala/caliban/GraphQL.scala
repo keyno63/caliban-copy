@@ -11,6 +11,10 @@ object GraphQL {
              mutationSchema: Schema[R, M],
         subscriptionSchema: Schema[R, S]
   ): GraphQL[R] = new GraphQL[R] {
+    val schemaBuilder: RootSchemaBuilder[R] = RootSchemaBuilder(
+      resolver.queryResolver.map(r => Operation(querySchema.toType_(), querySchema.resolve(r))),
+
+    )
 
   }
 }
