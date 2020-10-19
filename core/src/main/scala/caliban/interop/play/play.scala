@@ -1,6 +1,7 @@
 package caliban.interop.play
 
-import play.api.libs.json.{ JsValue, Json, JsonValidationError, Reads, Writes }
+import play.api.libs.json.{JsValue, Json, JsonValidationError, Reads, Writes}
+import zio.ZIO
 import zio.query.ZQuery
 
 private[caliban] trait IsPlayJsonWrites[F[_]]

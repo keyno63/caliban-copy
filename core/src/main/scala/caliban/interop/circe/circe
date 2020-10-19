@@ -1,6 +1,7 @@
 package caliban.interop.circe
 
 import io.circe._
+import zio.ZIO
 import zio.query.ZQuery
 
 private[caliban] trait IsCirceEncoder[F[_]]
