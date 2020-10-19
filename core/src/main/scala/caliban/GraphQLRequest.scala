@@ -21,8 +21,8 @@ private object GraphQLRequestCirce {
       query         <- c.downField("query").as[Option[String]]
       operationName <- c.downField("operationName").as[Option[String]]
       variables     <- c.downField("variables").as[Option[Map[String, InputValue]]]
-      extentions    <- c.downField("extentions").as[Option[Map[String, InputValue]]]
-    } yield GraphQLRequest(query, operationName, variables, extentions)
+      extensions    <- c.downField("extensions").as[Option[Map[String, InputValue]]]
+    } yield GraphQLRequest(query, operationName, variables, extensions)
 }
 
 private object GraphQLRequestPlayJson {
