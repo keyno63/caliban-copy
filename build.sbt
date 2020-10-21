@@ -15,6 +15,7 @@ val zqueryVersion         = "0.2.3"
 
 lazy val root = project
   .in(file("."))
+  .settings(name := "caliban-copy")
   .settings(historyPath := None)
   .aggregate(core)
 
