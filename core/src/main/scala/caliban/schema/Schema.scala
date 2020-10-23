@@ -24,3 +24,5 @@ trait Schema[-R, T] { self =>
     override def resolve(value: A): Step[R] = self.resolve(f(value))
   }
 }
+
+object Schema extends GenericSchema[Any]
