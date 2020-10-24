@@ -18,11 +18,20 @@ trait Schema[-R, T] { self =>
   def arguments: List[__InputValue] = Nil
 
   def contramap[A](f: A => T): Schema[R, A] = new Schema[R, A] {
-    override def optional: Boolean = self.optional
-    override def arguments: List[__InputValue] = self.arguments
+    override def optional: Boolean                                         = self.optional
+    override def arguments: List[__InputValue]                             = self.arguments
     override def toType(isInput: Boolean, isSubscription: Boolean): __Type = self.toType(isInput, isSubscription)
-    override def resolve(value: A): Step[R] = self.resolve(f(value))
+    override def resolve(value: A): Step[R]                                = self.resolve(f(value))
   }
 }
 
 object Schema extends GenericSchema[Any]
+
+trait GenericSchema[R] extends DerivationSchema[R] with TemporalSchema {
+
+  def scalarSchema[A](name: String, description: Option[String], makeResponse: A => ResponseValue): Schema[Any, A] =
+    new Schema[Any, A] {
+      override def toType(isInput: Boolean, isSubscription: Boolean): __Type = makeScalar(name, description)
+      override def resolve(value: A): Step[Any]                              = pureStep(makeResponse(value))
+    }
+}
