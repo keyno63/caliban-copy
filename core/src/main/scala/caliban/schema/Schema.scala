@@ -43,7 +43,14 @@ trait GenericSchema[R] extends DerivationSchema[R] with TemporalSchema {
   ): Schema[R1, A] =
     new Schema[R1, A] {
 
-      override def toType(isInput: Boolean, isSubscription: Boolean) = ???
-      override def resolve(value: A)                                 = ???
+      override def toType(isInput: Boolean, isSubscription: Boolean): __Type =
+        if (isInput) {
+          makeInputObject(Some(customizeInputTypeName(name)), description, fields(isInput, isSubscription).map {
+            case (f, _) => __InputValue(f.name, f.description, f.`type`, None)
+          })
+        } else makeObject(Some(name), description, fields(isInput, isSubscription).map(_._1), directives)
+
+      override def resolve(value: A): Step[R1] =
+        ObjectStep(name, fields(false, false).map { case (f, plan) => f.name -> plan(value) }.toMap)
     }
 }
