@@ -36,14 +36,14 @@ trait GenericSchema[R] extends DerivationSchema[R] with TemporalSchema {
     }
 
   def objectSchema[R1, A](
-                         name: String,
-                         description: Option[String],
-                         fields: (Boolean, Boolean) => List[(__Field, A => Step[R1])],
-                         directives: List[Directive] = List.empty
-                         ): Schema[R1, A] =
+    name: String,
+    description: Option[String],
+    fields: (Boolean, Boolean) => List[(__Field, A => Step[R1])],
+    directives: List[Directive] = List.empty
+  ): Schema[R1, A] =
     new Schema[R1, A] {
 
       override def toType(isInput: Boolean, isSubscription: Boolean) = ???
-      override def resolve(value: A) = ???
+      override def resolve(value: A)                                 = ???
     }
 }
