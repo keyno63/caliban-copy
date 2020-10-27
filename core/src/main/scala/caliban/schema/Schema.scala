@@ -1,5 +1,7 @@
 package caliban.schema
 
+import java.util.UUID
+
 trait Schema[-R, T] { self =>
 
   private lazy val asType: __Type             = toType()
@@ -53,4 +55,15 @@ trait GenericSchema[R] extends DerivationSchema[R] with TemporalSchema {
       override def resolve(value: A): Step[R1] =
         ObjectStep(name, fields(false, false).map { case (f, plan) => f.name -> plan(value) }.toMap)
     }
+
+  implicit val unitSchema: Schema[Any, Unit]             = scalarSchema("unit", None, _ => ObjectValue(Nil))
+  implicit val booleanSchema: Schema[Any, Boolean]       = scalarSchema("Boolean", None, BooleanValue)
+  implicit val stringScheam: Schema[Any, String]         = scalarSchema("String", None, StringValue)
+  implicit val uuidSchema: Schema[Any, UUID]             = scalarSchema("ID", None, uuid => StringValue(uuid.toString))
+  implicit val intSchema: Schema[Any, Int]               = scalarSchema("Int", None, IntValue(_))
+  implicit val longSchema: Schema[Any, Long]             = scalarSchema("Long", None, IntValue(_))
+  implicit val bigIntSchema: Schema[Any, BigInt]         = scalarSchema("BigInt", None, IntValue(_))
+  implicit val doubleSchema: Schema[Any, Double]         = scalarSchema("Double", None, FloatValue(_))
+  implicit val floatSchema: Schema[Any, Float]           = scalarSchema("Float", None, FloatValue(_))
+  implicit val bigDecimalSchema: Schema[Any, BigDecimal] = scalarSchema("BigDecimal", None, FloatValue(_))
 }
