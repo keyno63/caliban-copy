@@ -2,6 +2,8 @@ package caliban.schema
 
 import java.util.UUID
 
+import zio.Chunk
+
 trait Schema[-R, T] { self =>
 
   private lazy val asType: __Type             = toType()
@@ -66,4 +68,32 @@ trait GenericSchema[R] extends DerivationSchema[R] with TemporalSchema {
   implicit val doubleSchema: Schema[Any, Double]         = scalarSchema("Double", None, FloatValue(_))
   implicit val floatSchema: Schema[Any, Float]           = scalarSchema("Float", None, FloatValue(_))
   implicit val bigDecimalSchema: Schema[Any, BigDecimal] = scalarSchema("BigDecimal", None, FloatValue(_))
+
+  implicit def optionSchema[A](implicit ev: Schema[R, A]): Schema[R, Option[A]] = new Schema[R, Option[A]] {
+    override def optional: Boolean                                                 = ???
+    override protected[this] def toType(isInput: Boolean, isSubscription: Boolean) = ???
+    override def resolve(value: Option[A])                                         = ???
+  }
+
+  implicit def listSchema[A](implicit ev: Schema[R, A]): Schema[R, List[A]] = new Schema[R, List[A]] {
+    override protected[this] def toType(isInput: Boolean, isSubscription: Boolean) = ???
+    override def resolve(value: List[A])                                           = ???
+  }
+
+  implicit def setSchema[A](implicit ev: Schema[R, A]): Schema[R, Set[A]]       = listSchema[A].contramap(_.toList)
+  implicit def seqSchema[A](implicit ev: Schema[R, A]): Schema[R, Seq[A]]       = listSchema[A].contramap(_.toList)
+  implicit def vectorSchema[A](implicit ev: Schema[R, A]): Schema[R, Vector[A]] = listSchema[A].contramap(_.toList)
+  implicit def chunkSchema[A](implicit ev: Schema[R, A]): Schema[R, Chunk[A]]   = listSchema[A].contramap(_.toList)
+  implicit def functionUnitSchema[A](implicit ev: Schema[R, A]): Schema[R, () => A] =
+    new Schema[R, () => A] {
+      override def optional: Boolean                                                 = ???
+      override protected[this] def toType(isInput: Boolean, isSubscription: Boolean) = ???
+      override def resolve(value: () => A)                                           = ???
+    }
+
+  implicit def eitherSchema[RA, RB, A, B](
+    implicit ev: Schema[RA, A],
+    evB: Schema[RB, B]
+  ): Schema[RA with RB, Either[A, B]] =
+    ???
 }
