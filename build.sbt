@@ -1,4 +1,4 @@
-val mainScala             = "2.12.11"
+val mainScala             = "2.12.15"
 val allScala              = Seq("2.13.2", mainScala)
 val akkaVersion           = "2.6.8"
 val catsEffectVersion     = "2.1.4"
