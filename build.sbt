@@ -11,7 +11,7 @@ val tapirVersion          = "0.16.10"
 val zioVersion            = "1.0.12"
 val zioInteropCatsVersion = "2.1.4.0-RC17"
 val zioConfigVersion      = "1.0.0-RC25"
-val zqueryVersion         = "0.2.3"
+val zqueryVersion         = "0.2.10"
 
 lazy val root = project
   .in(file("."))
