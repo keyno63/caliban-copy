@@ -28,7 +28,7 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "com.lihaoyi"       %% "fastparse"    % "2.3.3",
       "com.propensive"    %% "magnolia"     % "0.17.0",
-      "com.propensive"    %% "mercator"     % "0.2.1",
+      "com.propensive"    %% "mercator"     % "0.3.0",
       "dev.zio"           %% "zio"          % zioVersion,
       "dev.zio"           %% "zio-streams"  % zioVersion,
       "dev.zio"           %% "zio-query"    % zqueryVersion,
